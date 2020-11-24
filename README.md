@@ -27,6 +27,8 @@ Create migrations
 php artisan make:migration create_users_table
 php artisan make:migration create_password_resets_table
 php artisan make:migration create_failed_jobs_table
+php artisan make:migration create_blogs_table
+php artisan make:migration create_blog_responses_table
 ```
 Add additional data to migration file in `database/migrations`.
 
