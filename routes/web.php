@@ -13,7 +13,9 @@
 
 Auth::routes();
 
-Route::get('/', 'HomeController@index');
-Route::get('/home', 'HomeController@index')->name('home');
-
+Route::get('/', 'PostController@index');
+Route::get('/home', 'PostController@index')->name('home');
+Route::get('/post', 'PostController@post');
+Route::get('/show', 'PostController@show');
+Route::post('/create_post', 'PostController@create');
 
