@@ -13,7 +13,7 @@
         @foreach ($blogs as $blog)
         <div class="post-preview">
           
-          <a href="/show?post_id={{$blog->id}}">
+          <a href="/show?blog_id={{$blog->id}}">
               <h2 class="post-title">
                 {{$blog->title}}
               </h2>
@@ -26,11 +26,11 @@
           <div class="clearfix">
           <form action="/delete_post", method="post">
             @csrf
-            <input type="hidden" name="post_id" value="{{$blog->id}}">
+            <input type="hidden" name="blog_id" value="{{$blog->id}}">
             <button type="submit" class="btn btn-primary float-right" style="float: right;">Delete</button>
           </form>
           <form action="/update_post", method="get">
-            <input type="hidden" name="post_id" value="{{$blog->id}}">
+            <input type="hidden" name="blog_id" value="{{$blog->id}}">
             <button type="submit" class="btn btn-primary float-right" style="float: right;">Edit</button>
           </form>
         </div>

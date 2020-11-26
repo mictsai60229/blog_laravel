@@ -12,15 +12,15 @@
         <div class="col-lg-8 col-md-10 mx-auto">
         <form action="/update_post" method="post">
           @csrf
-          <input type="hidden" name="post_id" value="{{$post_id}}">
+          <input type="hidden" name="blog_id" value="{{$blog_id}}">
           <div class="form-group">
             <label for="blog-title">Title</label>
-            <input type="text" class="form-control" id="blog-title" name="blog-title" value="{{$post_title}}">
+            <input type="text" class="form-control" id="blog-title" name="blog-title" value="{{$blog_title}}">
           </div>
           <div class="form-group">
             
             <label for="blog-textarea">Content</label>
-            <textarea class="form-control" id="blog-textarea" name="blog-textarea" rows="20">{{$post_content}}</textarea>
+            <textarea class="form-control" id="blog-textarea" name="blog-textarea" rows="20">{{$blog_content}}</textarea>
           </div>
           <div class="form-group">
             <button type="submit" class="btn btn-primary mb-2" style="float: right;">Submit</button>

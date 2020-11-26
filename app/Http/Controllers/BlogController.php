@@ -6,7 +6,7 @@ use App\Blog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class PostController extends Controller
+class BLogController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -66,14 +66,14 @@ class PostController extends Controller
     public function delete(Request $request)
     {
         $user_id = $request->user()->id;
-        $post_id = $request->input('post_id');
+        $blog_id = $request->input('blog_id');
         $blog = DB::table('blogs')
             ->select('user_id')
-            ->where('id', '=', $post_id)
+            ->where('id', '=', $blog_id)
             ->first();
         if ($user_id === $blog->user_id){
             DB::table('blogs')
-                ->where('id', '=', $post_id)
+                ->where('id', '=', $blog_id)
                 ->delete();
         }
 
@@ -83,20 +83,20 @@ class PostController extends Controller
     public function update_index(Request $request)
     {
         $user_id = $request->user()->id;
-        $post_id = $request->input('post_id');
+        $blog_id = $request->input('blog_id');
 
         $blog = DB::table('blogs')
             ->select('id', 'user_id', 'title', 'content')
-            ->where('id', '=', $post_id)
+            ->where('id', '=', $blog_id)
             ->first();
         
-        if ($post_id === NULL || $blog === NULL || $user_id !== $blog->user_id){
+        if ($blog_id === NULL || $blog === NULL || $user_id !== $blog->user_id){
                 return redirect()->route('home');
         }
         $response_data = [
-            'post_id' => $blog->id,
-            'post_title' => $blog->title,
-            'post_content' => $blog->content,
+            'blog_id' => $blog->id,
+            'blog_title' => $blog->title,
+            'blog_content' => $blog->content,
         ];
 
         return view('edit', $response_data);
@@ -105,9 +105,9 @@ class PostController extends Controller
     public function update(Request $request)
     {
         $user_id = $request->user()->id;
-        $post_id = $request->input('post_id');
+        $blog_id = $request->input('blog_id');
 
-        if ($post_id === NULL){
+        if ($blog_id === NULL){
             return redirect()->route('home');
         }
 
@@ -116,11 +116,11 @@ class PostController extends Controller
             'content' => $request->input('blog-textarea'),
         ];
 
-        Blog::where('id', $post_id)
+        Blog::where('id', $blog_id)
             ->where('user_id', $user_id)
             ->update($update_array);
 
-        return redirect()->route('show', ['post_id' => $post_id]);
+        return redirect()->route('show', ['blog_id' => $blog_id]);
     }
 
     /*
@@ -135,16 +135,16 @@ class PostController extends Controller
 
     public function show(Request $request)
     {
-        if ($request->has('post_id')){
-            $post_id = $request->input('post_id');
+        if ($request->has('blog_id')){
+            $blog_id = $request->input('blog_id');
         }
         else{
-            $post_id = -1;
+            $blog_id = -1;
         }
 
-        if ($post_id !== -1){
+        if ($blog_id !== -1){
             $blogs = DB::table('blogs')->select('id', 'user_id', 'name', 'title', 'content', 'created_at')
-                             ->where('id', '=', $post_id)
+                             ->where('id', '=', $blog_id)
                              ->get();
         }
         else{
@@ -165,11 +165,11 @@ class PostController extends Controller
 
         $response_data = [
             'user_id' => $user_id,
-            'post_id' => $post_id,
-            'post_user_id' => $blog->user_id,
-            'post_name' => $blog->name,
-            'post_title' => $blog->title,
-            'post_content' => $blog->content,
+            'blog_id' => $blog_id,
+            'blog_user_id' => $blog->user_id,
+            'blog_name' => $blog->name,
+            'blog_title' => $blog->title,
+            'blog_content' => $blog->content,
             'date' => $blog->created_at,
         ];
 
