@@ -21,6 +21,7 @@
     
     <!-- Custom styles for this template -->
     <link href="css/clean-blog.min.css" rel="stylesheet">
+    <link href="css/comment-box.css" rel="stylesheet">
     
     </head>
 
@@ -36,5 +37,6 @@
 
     <!-- Custom scripts for this template -->
     <script src="js/clean-blog.min.js"></script>
+    
     </body>
 </html>

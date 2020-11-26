@@ -7,6 +7,7 @@ Posted by {{$post_name}} on {{$date}}
 @endsection
 
 
+
 @section('content')
   <!-- Post Content -->
   <article>
@@ -31,6 +32,49 @@ Posted by {{$post_name}} on {{$date}}
       </div>
     </div>
   </article>
+
+  <hr>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+  <div class="detailBox">
+    <div class="actionBox">
+        <ul class="commentList">
+            <li>
+                <div class="commentText">
+                     <a href="#">Joe</a>
+                    <p class="">Hello this is a test comment.</p> <span class="date sub-text">on March 5th, 2014</span>
+
+                </div>
+            </li>
+            <li>
+                <div class="commentText">
+                    <a href="#">Joe</a>
+                    <p class="">Hello this is a test comment and this comment is particularly very long and it goes on and on and on.</p> <span class="date sub-text">on March 5th, 2014</span>
+
+                </div>
+            </li>
+            <li>
+                <div class="commentText">
+                    <a href="#">Joe</a>
+                    <p class="">Hello this is a test comment.</p> <span class="date sub-text">on March 5th, 2014</span>
+                </div>
+            </li>
+        </ul>
+        <form class="form-inline" role="form">
+            <div class="form-group">
+                <input class="form-control" type="text" placeholder="Your comments" />
+            </div>
+            <div class="form-group">
+                <button class="btn btn-default">Add</button>
+            </div>
+        </form>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+
 
   <hr>
 @endsection
