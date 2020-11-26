@@ -80,49 +80,47 @@ class PostController extends Controller
         return redirect()->route('home');
     }
 
+    public function update_index(Request $request)
+    {
+        $user_id = $request->user()->id;
+        $post_id = $request->input('post_id');
+
+        $blog = DB::table('blogs')
+            ->select('id', 'user_id', 'title', 'content')
+            ->where('id', '=', $post_id)
+            ->first();
+        
+        if ($post_id === NULL || $blog === NULL || $user_id !== $blog->user_id){
+                return redirect()->route('home');
+        }
+        $response_data = [
+            'post_id' => $blog->id,
+            'post_title' => $blog->title,
+            'post_content' => $blog->content,
+        ];
+
+        return view('edit', $response_data);
+    }
+
     public function update(Request $request)
     {
-        if ($request->isMethod('get')){
+        $user_id = $request->user()->id;
+        $post_id = $request->input('post_id');
 
-            $user_id = $request->user()->id;
-            $post_id = $request->input('post_id');
-
-            $blog = DB::table('blogs')
-                ->select('id', 'user_id', 'title', 'content')
-                ->where('id', '=', $post_id)
-                ->first();
-            
-            if ($post_id === NULL || $blog === NULL || $user_id !== $blog->user_id){
-                    return redirect()->route('home');
-            }
-            $response_data = [
-                'post_id' => $blog->id,
-                'post_title' => $blog->title,
-                'post_content' => $blog->content,
-            ];
-
-            return view('edit', $response_data);
+        if ($post_id === NULL){
+            return redirect()->route('home');
         }
-        else if($request->isMethod('post')){
-            $user_id = $request->user()->id;
-            $post_id = $request->input('post_id');
 
-            if ($post_id === NULL){
-                return redirect()->route('home');
-            }
+        $update_array = [
+            'title' => $request->input('blog-title'),
+            'content' => $request->input('blog-textarea'),
+        ];
 
-            $update_array = [
-                'title' => $request->input('blog-title'),
-                'content' => $request->input('blog-textarea'),
-            ];
+        Blog::where('id', $post_id)
+            ->where('user_id', $user_id)
+            ->update($update_array);
 
-            Blog::where('id', $post_id)
-                ->where('user_id', $user_id)
-                ->update($update_array);
-
-            return redirect()->route('show', ['post_id' => $post_id]);
-        }
-        return redirect()->route('home');
+        return redirect()->route('show', ['post_id' => $post_id]);
     }
 
     /*

@@ -20,6 +20,6 @@ Route::get('/show', 'PostController@show')->name('show');
 Route::post('/create_post', 'PostController@create');
 Route::post('/delete_post', 'PostController@delete');
 
-Route::get('/update_post', 'PostController@update');
+Route::get('/update_post', 'PostController@update_index');
 Route::post('/update_post', 'PostController@update');
 
