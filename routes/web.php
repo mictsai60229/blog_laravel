@@ -24,5 +24,10 @@ Route::get('/update_blog', 'BlogController@update_index');
 Route::post('/update_blog', 'BlogController@update');
 
 
+//BlogResponseController
+Route::post('/create_blog_response', 'BlogResponseController@create');
+Route::post('/delete_blog_response', 'BlogResponseController@delete');
+
+
 
 

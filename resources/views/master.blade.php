@@ -37,6 +37,7 @@
 
     <!-- Custom scripts for this template -->
     <script src="js/clean-blog.min.js"></script>
+    <script src="js/blog-response.js"></script>
     
     </body>
 </html>

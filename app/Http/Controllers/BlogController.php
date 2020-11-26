@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Blog;
+use App\BlogResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -143,14 +144,16 @@ class BLogController extends Controller
         }
 
         if ($blog_id !== -1){
-            $blogs = DB::table('blogs')->select('id', 'user_id', 'name', 'title', 'content', 'created_at')
-                             ->where('id', '=', $blog_id)
-                             ->get();
+            $blogs = DB::table('blogs')
+                ->select('id', 'user_id', 'name', 'title', 'content', 'created_at')
+                ->where('id', '=', $blog_id)
+                ->get();
         }
         else{
-            $blogs = DB::table('blogs')->select('id', 'user_id', 'name', 'title', 'content', 'created_at')
-                             ->latest()
-                             ->get();
+            $blogs = DB::table('blogs')
+                ->select('id', 'user_id', 'name', 'title', 'content', 'created_at')
+                ->latest()
+                ->get();
         }
 
         if (sizeof($blogs) == 0){
@@ -170,6 +173,7 @@ class BLogController extends Controller
             'blog_name' => $blog->name,
             'blog_title' => $blog->title,
             'blog_content' => $blog->content,
+            'blog_responses' => $this->get_blog_response($blog_id),
             'date' => $blog->created_at,
         ];
 
@@ -181,5 +185,14 @@ class BLogController extends Controller
     public function post()
     {
         return view('post');
+    }
+
+    private function get_blog_response($blog_id){
+        return DB::table("blog_responses")
+            ->select('id', 'user_id', 'name', 'content', 'created_at')
+            ->where('blog_id', '=', $blog_id)
+            ->latest()
+            ->get();
+                  
     }
 }
