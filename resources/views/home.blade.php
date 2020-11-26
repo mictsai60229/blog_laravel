@@ -29,7 +29,7 @@
             <input type="hidden" name="post_id" value="{{$blog->id}}">
             <button type="submit" class="btn btn-primary float-right" style="float: right;">Delete</button>
           </form>
-          <form action="/edit_post", method="get">
+          <form action="/update_post", method="get">
             <input type="hidden" name="post_id" value="{{$blog->id}}">
             <button type="submit" class="btn btn-primary float-right" style="float: right;">Edit</button>
           </form>

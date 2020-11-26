@@ -15,7 +15,7 @@ class PostController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except(['index']);
     }
 
     /**
@@ -23,14 +23,23 @@ class PostController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+    public function index(Request $request)
     {
-        $blogs = DB::table('blogs')->select('id', 'name', 'title', 'created_at')
+        $blogs = DB::table('blogs')->select('id', 'user_id', 'name', 'title', 'created_at')
                              ->latest()
                              ->limit(5)
                              ->get();
+        
+        if ($request->user() === NULL){
+            $user_id = -1;
+        }
+        else{
+            $user_id = $request->user()->id;
+        }
+        
         $response_data = [
             'blogs' => $blogs,
+            'user_id' => $user_id,
         ];
         
         return view('home', $response_data);
@@ -53,21 +62,76 @@ class PostController extends Controller
         $blog->save();
         return redirect()->route('home');
     }
+        
+    public function delete(Request $request)
+    {
+        $user_id = $request->user()->id;
+        $post_id = $request->input('post_id');
+        $blog = DB::table('blogs')
+            ->select('user_id')
+            ->where('id', '=', $post_id)
+            ->first();
+        if ($user_id === $blog->user_id){
+            DB::table('blogs')
+                ->where('id', '=', $post_id)
+                ->delete();
+        }
+
+        return redirect()->route('home');
+    }
+
+    public function update(Request $request)
+    {
+        if ($request->isMethod('get')){
+
+            $user_id = $request->user()->id;
+            $post_id = $request->input('post_id');
+
+            $blog = DB::table('blogs')
+                ->select('id', 'user_id', 'title', 'content')
+                ->where('id', '=', $post_id)
+                ->first();
+            
+            if ($post_id === NULL || $blog === NULL || $user_id !== $blog->user_id){
+                    return redirect()->route('home');
+            }
+            $response_data = [
+                'post_id' => $blog->id,
+                'post_title' => $blog->title,
+                'post_content' => $blog->content,
+            ];
+
+            return view('edit', $response_data);
+        }
+        else if($request->isMethod('post')){
+            $user_id = $request->user()->id;
+            $post_id = $request->input('post_id');
+
+            if ($post_id === NULL){
+                return redirect()->route('home');
+            }
+
+            $update_array = [
+                'title' => $request->input('blog-title'),
+                'content' => $request->input('blog-textarea'),
+            ];
+
+            Blog::where('id', $post_id)
+                ->where('user_id', $user_id)
+                ->update($update_array);
+
+            return redirect()->route('show', ['post_id' => $post_id]);
+        }
+        return redirect()->route('home');
+    }
 
     /*
-    public function delete()
-    {
-        return view('delete');
-    }
 
-    public function read()
-    {
-        return view('read');
-    }
+    
 
-    public function update()
+    public function search()
     {
-        return view('update');
+    
     }
     */
 
@@ -81,12 +145,12 @@ class PostController extends Controller
         }
 
         if ($post_id !== -1){
-            $blogs = DB::table('blogs')->select('name', 'title', 'content', 'created_at')
+            $blogs = DB::table('blogs')->select('id', 'user_id', 'name', 'title', 'content', 'created_at')
                              ->where('id', '=', $post_id)
                              ->get();
         }
         else{
-            $blogs = DB::table('blogs')->select('name', 'title', 'content', 'created_at')
+            $blogs = DB::table('blogs')->select('id', 'user_id', 'name', 'title', 'content', 'created_at')
                              ->latest()
                              ->get();
         }
@@ -96,8 +160,15 @@ class PostController extends Controller
         }
 
         $blog = $blogs[0];
+        if ($request->user() === NULL)
+            $user_id = -1;
+        else
+            $user_id = $request->user()->id;
 
         $response_data = [
+            'user_id' => $user_id,
+            'post_id' => $post_id,
+            'post_user_id' => $blog->user_id,
             'post_name' => $blog->name,
             'post_title' => $blog->title,
             'post_content' => $blog->content,
