@@ -13,12 +13,16 @@
 
 Auth::routes();
 
+// BlogController
 Route::get('/', 'BlogController@index');
 Route::get('/home', 'BlogController@index')->name('home');
 Route::get('/post', 'BlogController@post');
 Route::get('/show', 'BlogController@show')->name('show');
-Route::post('/create_post', 'BlogController@create');
-Route::post('/delete_post', 'BlogController@delete');
-Route::get('/update_post', 'BlogController@update_index');
-Route::post('/update_post', 'BlogController@update');
+Route::post('/create_blog', 'BlogController@create');
+Route::post('/delete_blog', 'BlogController@delete');
+Route::get('/update_blog', 'BlogController@update_index');
+Route::post('/update_blog', 'BlogController@update');
+
+
+
 

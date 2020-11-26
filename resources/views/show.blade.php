@@ -16,12 +16,12 @@ Posted by {{$blog_name}} on {{$date}}
         <div class="col-lg-8 col-md-10 mx-auto">
           @if ($user_id === $blog_user_id)
           <div class="clearfix">
-          <form action="/delete_post", method="post">
+          <form action="/delete_blog", method="post">
             @csrf
             <input type="hidden" name="blog_id" value="{{$blog_id}}">
             <button type="submit" class="btn btn-primary float-right" style="float: right;">Delete</button>
           </form>
-          <form action="/update_post", method="get">
+          <form action="/update_blog", method="get">
             <input type="hidden" name="blog_id" value="{{$blog_id}}">
             <button type="submit" class="btn btn-primary float-right" style="float: right;">Edit</button>
           </form>

@@ -10,7 +10,7 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-        <form action="/create_post" method="post">
+        <form action="/create_blog" method="post">
           @csrf
           <div class="form-group">
             <label for="blog-title">Title</label>

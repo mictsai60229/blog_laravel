@@ -10,7 +10,7 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8 col-md-10 mx-auto">
-        <form action="/update_post" method="post">
+        <form action="/update_blog" method="post">
           @csrf
           <input type="hidden" name="blog_id" value="{{$blog_id}}">
           <div class="form-group">
