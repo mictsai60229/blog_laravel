@@ -14,6 +14,27 @@
             <li class="nav-item">
             <a class="nav-link" href="post">Post</a>
             </li>
+
+            @auth
+            <li class="nav-item">
+            <a class="nav-link" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                Logout
+            </a>
+            </li>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+            @endauth
+
+            @guest
+            <li class="nav-item">
+            <a class="nav-link" href="{{ route('login') }}" onclick="event.preventDefault(); document.getElementById('login-form').submit();">
+                Login
+            </a>
+            </li>
+            <form id="login-form" action="{{ route('login') }}" method="GET" style="display: none;">
+            </form>
+            @endguest
         </ul>
         </div>
     </div>

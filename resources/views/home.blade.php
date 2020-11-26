@@ -12,6 +12,7 @@
       <div class="col-lg-8 col-md-10 mx-auto">
         @foreach ($blogs as $blog)
         <div class="post-preview">
+          
           <a href="/show?post_id={{$blog->id}}">
               <h2 class="post-title">
                 {{$blog->title}}
@@ -21,7 +22,22 @@
           <a href="#">{{$blog->name}}</a>
           on {{$blog->created_at}}</p>
         </div>
+        @if ($user_id === $blog->user_id)
+          <div class="clearfix">
+          <form action="/delete_post", method="post">
+            @csrf
+            <input type="hidden" name="post_id" value="{{$blog->id}}">
+            <button type="submit" class="btn btn-primary float-right" style="float: right;">Delete</button>
+          </form>
+          <form action="/edit_post", method="get">
+            <input type="hidden" name="post_id" value="{{$blog->id}}">
+            <button type="submit" class="btn btn-primary float-right" style="float: right;">Edit</button>
+          </form>
+        </div>
+        @endif
+      
         <hr>
+        
         @endforeach
         <!-- Pager -->
         <div class="clearfix">

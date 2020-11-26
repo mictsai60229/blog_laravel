@@ -18,4 +18,8 @@ Route::get('/home', 'PostController@index')->name('home');
 Route::get('/post', 'PostController@post');
 Route::get('/show', 'PostController@show');
 Route::post('/create_post', 'PostController@create');
+Route::post('/delete_post', 'PostController@delete');
+
+Route::get('/update_post', 'PostController@update');
+Route::post('/update_post', 'PostController@update');
 
