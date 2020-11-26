@@ -24,12 +24,12 @@
         </div>
         @if ($user_id === $blog->user_id)
           <div class="clearfix">
-          <form action="/delete_post", method="post">
+          <form action="/delete_blog", method="post">
             @csrf
             <input type="hidden" name="blog_id" value="{{$blog->id}}">
             <button type="submit" class="btn btn-primary float-right" style="float: right;">Delete</button>
           </form>
-          <form action="/update_post", method="get">
+          <form action="/update_blog", method="get">
             <input type="hidden" name="blog_id" value="{{$blog->id}}">
             <button type="submit" class="btn btn-primary float-right" style="float: right;">Edit</button>
           </form>
