@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Blog;
 use App\BlogResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
 class BLogController extends Controller
@@ -45,6 +46,17 @@ class BLogController extends Controller
 
     public function create(Request $request)
     {
+
+        //validation
+        $validator = Validator::make($request->all(), [
+            'blog-title' => 'required|max:255',
+            'blog-textarea' => 'required',
+        ]);
+
+        if ($validator->fails()){
+            return back()->withErrors($validator)->withInput();
+        }
+
         $user_id = $request->user()->id;
         $name = $request->user()->name;
         $title = $request->input('blog-title');
@@ -102,12 +114,19 @@ class BLogController extends Controller
 
     public function update(Request $request)
     {
+
+        $validator = Validator::make($request->all(), [
+            'blog_id' => 'required|exists:blogs,id',
+            'blog-title' => 'required|max:255',
+            'blog-textarea' => 'required',
+        ]);
+
+        if ($validator->fails()){
+            return back()->withErrors($validator);
+        }
+
         $user_id = $request->user()->id;
         $blog_id = $request->input('blog_id');
-
-        if ($blog_id === NULL){
-            return redirect()->route('home');
-        }
 
         $update_array = [
             'title' => $request->input('blog-title'),
@@ -122,9 +141,6 @@ class BLogController extends Controller
     }
 
     /*
-
-    
-
     public function search()
     {
     
