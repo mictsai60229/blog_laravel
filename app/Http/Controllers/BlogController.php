@@ -26,10 +26,7 @@ class BLogController extends Controller
      */
     public function index(Request $request)
     {
-        $blogs = DB::table('blogs')->select('id', 'user_id', 'name', 'title', 'created_at')
-                             ->latest()
-                             ->limit(5)
-                             ->get();
+        $blogs = Blog::orderby('created_at', 'desc')->paginate(5);
         
         if ($request->user() === NULL){
             $user_id = -1;
