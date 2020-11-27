@@ -55,23 +55,26 @@ class BlogResponseController extends Controller
 
     public function delete(Request $request)
     {
+        $validator = Validator::make($request->all(), [
+            'blog_response_id' => 'required|exists:blog_responses,id',
+        ]);
+
+        if ($validator->fails()){
+            return response()->json(['status'=> "fail"]);
+        }
         $blog_response_id = $request->input('blog_response_id');
         $user_id = $request->user()->id;
 
         $response_data = [];
         
-        if ($blog_response_id !== NULL){
-            DB::table('blog_responses')
-                ->where('id', '=', $blog_response_id)
-                ->where('user_id', '=', $user_id)
-                ->delete();
+        DB::table('blog_responses')
+            ->where('id', '=', $blog_response_id)
+            ->where('user_id', '=', $user_id)
+            ->delete();
 
-            $response_data['blog_response_id'] = $blog_response_id;
-            $response_data['status'] = 'success';
-        }
-        else{
-            $response_data['status'] = 'fail';
-        }
+        $response_data['blog_response_id'] = $blog_response_id;
+        $response_data['status'] = 'success';
+
 
         return response()->json($response_data);
     }
