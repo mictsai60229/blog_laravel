@@ -2,7 +2,8 @@
 
 namespace Tests\Unit;
 
-use PHPUnit\Framework\TestCase;
+use Tests\TestCase;
+use App\User;
 
 class ExampleTest extends TestCase
 {
@@ -13,6 +14,7 @@ class ExampleTest extends TestCase
      */
     public function testBasicTest()
     {
+        factory(User::class)->create();
         $this->assertTrue(true);
     }
 }
