@@ -1,6 +1,8 @@
 
 ## Blog
 
+This is a laravel blog pratice using `Laravel 6.x` and `php 7.3`.
+
 ### Create Database
 
 Find the settings of the database in `config/database/php`.
@@ -64,6 +66,23 @@ navbar file
 content
 
 footer file
+```
+
+
+### Create Validation for input files
+
+Import  `use Illuminate\Support\Facades\Validator;`.
+
+Laravel provides diffent validatiors.
+Here is a example.
+```php
+Validator::make($request->all(), [
+    'blog-title' => 'required|max:255',
+    'blog-textarea' => 'required',
+]);
+
+// Each rule is speated by |
+// required means not null and length > 0
 ```
 
 
