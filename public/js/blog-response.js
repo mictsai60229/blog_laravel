@@ -42,7 +42,7 @@ function create_blog_response(event){
 function append_comment(content, name, time, id){
 
     let $node = `<li>
-        <div class="commentText" id="blog-response-${id}">
+        <div class="commentText" id="blog_response_${id}">
             <b class="" style="color: blue">${name}</b>
             <button onclick="delete_blog_response($id)" class="btn btn-danger btn-sm">delete</button>
             <p class="">${content}</p>
@@ -67,7 +67,7 @@ function delete_blog_response($blog_response_id){
             console.log(response);
             if (response["status"] == "success"){
                 let $blog_response_id = response['blog_response_id'];
-                let $search_id = `blog-response-${$blog_response_id}`;
+                let $search_id = `blog_response_${$blog_response_id}`;
                 document.getElementById($search_id).remove();
             }
             

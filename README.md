@@ -77,8 +77,8 @@ Laravel provides diffent validatiors.
 Here is a example.
 ```php
 Validator::make($request->all(), [
-    'blog-title' => 'required|max:255',
-    'blog-textarea' => 'required',
+    'blog_title' => 'required|max:255',
+    'blog_textarea' => 'required',
 ]);
 
 // Each rule is speated by |

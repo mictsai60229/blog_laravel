@@ -45,7 +45,7 @@ Posted by {{$blog_name}} on {{$date}}
         <ul class="commentList" id="comment-area">
             @foreach ($blog_responses as $blog_response)
             <li>
-              <div class="commentText" id="blog-response-{{$blog_response->id}}">
+              <div class="commentText" id="blog_response_{{$blog_response->id}}">
                   <b class="" style="color: blue">{{$blog_response->name}}</b>
                   @if ($user_id  === $blog_response->user_id)
                   <button onclick="delete_blog_response({{$blog_response->id}})" class="btn btn-danger btn-sm">delete</button>

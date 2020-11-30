@@ -42,8 +42,8 @@ class BLogController extends Controller
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'blog-title' => 'required|max:255',
-            'blog-textarea' => 'required',
+            'blog_title' => 'required|max:255',
+            'blog_textarea' => 'required',
         ]);
 
         if ($validator->fails()){
@@ -52,8 +52,8 @@ class BLogController extends Controller
 
         $user_id = $request->user()->id;
         $name = $request->user()->name;
-        $title = $request->input('blog-title');
-        $content = $request->input('blog-textarea');
+        $title = $request->input('blog_title');
+        $content = $request->input('blog_textarea');
 
         $blog = new Blog;
 
@@ -110,8 +110,8 @@ class BLogController extends Controller
 
         $validator = Validator::make($request->all(), [
             'blog_id' => 'required|exists:blogs,id',
-            'blog-title' => 'required|max:255',
-            'blog-textarea' => 'required',
+            'blog_title' => 'required|max:255',
+            'blog_textarea' => 'required',
         ]);
 
         if ($validator->fails()){
@@ -122,8 +122,8 @@ class BLogController extends Controller
         $blog_id = $request->input('blog_id');
 
         $update_array = [
-            'title' => $request->input('blog-title'),
-            'content' => $request->input('blog-textarea'),
+            'title' => $request->input('blog_title'),
+            'content' => $request->input('blog_textarea'),
         ];
 
         Blog::where('id', $blog_id)
