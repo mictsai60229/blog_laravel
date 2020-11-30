@@ -45,7 +45,7 @@ class BLogController extends Controller
         $validator = Validator::make($request->all(), [
             'blog_title' => 'required|max:255',
             'blog_textarea' => 'required',
-            'blog_img' => 'nullable|sometimes|image|mimes:jpeg,bmp,png,jpg',
+            'blog_img' => 'nullable|image|mimes:jpeg,bmp,png,jpg',
         ]);
 
         if ($validator->fails()){
@@ -113,7 +113,7 @@ class BLogController extends Controller
             'blog_id' => 'required|exists:blogs,id',
             'blog_title' => 'required|max:255',
             'blog_textarea' => 'required',
-            'blog_img' => 'nullable|sometimes|image|mimes:jpeg,bmp,png,jpg',
+            'blog_img' => 'nullable|image|mimes:jpeg,bmp,png,jpg',
         ]);
 
         if ($validator->fails()){
