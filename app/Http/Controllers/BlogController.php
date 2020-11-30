@@ -167,7 +167,7 @@ class BLogController extends Controller
             'blog_user_id' => $blog->user_id,
             'blog_name' => $blog->name,
             'blog_title' => $blog->title,
-            'blog_content' => $blog->content,
+            'blog_content' => explode("\n", $blog->content),
             'blog_responses' => $this->get_blog_response($blog_id),
             'date' => $blog->created_at,
         ];
@@ -195,6 +195,7 @@ class BLogController extends Controller
                 ->orderby('created_at', 'desc')
                 ->paginate(5);
         }
+
         return $blogs;
 
     }

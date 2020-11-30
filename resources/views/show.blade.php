@@ -27,7 +27,9 @@ Posted by {{$blog_name}} on {{$date}}
           </form>
         </div>
         @endif
-        <p>{{$blog_content}}</p>
+        @foreach ($blog_content as $content)
+          <p>{{$content}}</p>
+        @endforeach
         </div>
       </div>
     </div>
