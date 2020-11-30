@@ -24,7 +24,7 @@ class BlogResponseController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'blog_id' => 'required|exists:blogs,id',
-            'content' => 'required',
+            'content' => 'required|max:255',
         ]);
 
         if ($validator->fails()){
