@@ -41,7 +41,7 @@ php artisan migrate
 
 Reset database
 ```
-php artisan fresh
+php artisan migrate:fresh
 ```
 
 ### Create Routes
