@@ -17,9 +17,9 @@ class CreateBlogResponsesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->integer('user_id')->unsigned();
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->obDelete('cascade');
             $table->integer('blog_id')->unsigned();
-            $table->foreign('blog_id')->references('id')->on('blogs');
+            $table->foreign('blog_id')->references('id')->on('blogs')->obDelete('cascade');
             $table->string('content');
             $table->timestamps();
         });
