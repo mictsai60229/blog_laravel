@@ -10,6 +10,11 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
+        <form class="form-inline" action="/home" method="get">
+          <input type="text" class="form-control col-md-9 mb-2 mr-sm-2" id="query" name="query" value="{{$query}}">
+          <button type="submit" class="btn btn-primary mb-2">Search</button>
+        </form>
+
         @foreach ($blogs as $blog)
         <div class="post-preview">
           

@@ -17,7 +17,7 @@ class BLogController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth')->except(['index']);
+        $this->middleware('auth')->except(['index', 'search']);
     }
 
     /**
@@ -27,16 +27,11 @@ class BLogController extends Controller
      */
     public function index(Request $request)
     {
-        $blogs = Blog::orderby('created_at', 'desc')->paginate(5);
-        
-        if ($request->user() === NULL){
-            $user_id = -1;
-        }
-        else{
-            $user_id = $request->user()->id;
-        }
+        $blogs = $this->search($request->input('query'));
+        $user_id = $request->user()?$request->user()->id:-1;
         
         $response_data = [
+            'query' => $request->input('query'),
             'blogs' => $blogs,
             'user_id' => $user_id,
         ];
@@ -46,8 +41,6 @@ class BLogController extends Controller
 
     public function create(Request $request)
     {
-
-        //validation
         $validator = Validator::make($request->all(), [
             'blog-title' => 'required|max:255',
             'blog-textarea' => 'required',
@@ -140,29 +133,18 @@ class BLogController extends Controller
         return redirect()->route('show', ['blog_id' => $blog_id]);
     }
 
-    /*
-    public function search()
-    {
-    
-    }
-    */
-
     public function show(Request $request)
     {
+
         if ($request->has('blog_id')){
             $blog_id = $request->input('blog_id');
-        }
-        else{
-            $blog_id = -1;
-        }
-
-        if ($blog_id !== -1){
             $blogs = DB::table('blogs')
                 ->select('id', 'user_id', 'name', 'title', 'content', 'created_at')
                 ->where('id', '=', $blog_id)
                 ->get();
         }
         else{
+            $blog_id = -1;
             $blogs = DB::table('blogs')
                 ->select('id', 'user_id', 'name', 'title', 'content', 'created_at')
                 ->latest()
@@ -189,8 +171,6 @@ class BLogController extends Controller
             'blog_responses' => $this->get_blog_response($blog_id),
             'date' => $blog->created_at,
         ];
-
-        
         
         return view('show', $response_data);
     }
@@ -199,6 +179,26 @@ class BLogController extends Controller
     {
         return view('post');
     }
+
+    private function search($query)
+    {
+        if (empty($query)){
+            $blogs = DB::table('blogs')->
+                orderby('created_at', 'desc')
+                ->paginate(5);
+        }
+        else{
+            $sql_query = "%".$query."%";
+            $blogs = DB::table('blogs')
+                ->where('title', 'like', $sql_query)
+                ->orWhere('content', 'like', $sql_query)
+                ->orderby('created_at', 'desc')
+                ->paginate(5);
+        }
+        return $blogs;
+
+    }
+
 
     private function get_blog_response($blog_id){
         return DB::table("blog_responses")
