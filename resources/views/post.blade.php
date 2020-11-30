@@ -20,14 +20,17 @@
             </div>
           @endif
 
-        <form action="/create_blog" method="post">
+        <form action="/create_blog" method="post" enctype="multipart/form-data">
           @csrf
           <div class="form-group">
             <label for="blog_title">Title</label>
             <input type="text" class="form-control" id="blog_title" name="blog_title">
           </div>
           <div class="form-group">
-            
+            <label for="blog_img">Picture(not required)</label>
+            <input type="file" class="form-control-file" id="blog_img", name="blog_img">
+          </div>
+          <div class="form-group">
             <label for="blog_textarea">Content</label>
             <textarea class="form-control" id="blog_textarea" name="blog_textarea" rows="20"></textarea>
           </div>

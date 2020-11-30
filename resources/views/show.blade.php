@@ -27,6 +27,9 @@ Posted by {{$blog_name}} on {{$date}}
           </form>
         </div>
         @endif
+        @if($blog_img)
+          <img src="/img/blogs/{{$blog_img}}" width="100%" height="auto">
+        @endif
         @foreach ($blog_content as $content)
           <p>{{$content}}</p>
         @endforeach

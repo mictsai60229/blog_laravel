@@ -7,6 +7,7 @@ use App\BlogResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
+use Intervention\Image\ImageManagerStatic as Image;
 
 class BLogController extends Controller
 {
@@ -44,15 +45,18 @@ class BLogController extends Controller
         $validator = Validator::make($request->all(), [
             'blog_title' => 'required|max:255',
             'blog_textarea' => 'required',
+            'blog_img' => 'nullable|sometimes|image|mimes:jpeg,bmp,png,jpg',
         ]);
 
         if ($validator->fails()){
             return back()->withErrors($validator)->withInput();
         }
 
+
         $user_id = $request->user()->id;
         $name = $request->user()->name;
         $title = $request->input('blog_title');
+        $image = $request->has('blog_img')?$this->save_image($request->file('blog_img')):NULL;
         $content = $request->input('blog_textarea');
 
         $blog = new Blog;
@@ -60,24 +64,24 @@ class BLogController extends Controller
         $blog -> name = $name;
         $blog -> user_id = $user_id;
         $blog -> title = $title;
+        $blog -> image = $image;
         $blog -> content = $content;
 
         $blog->save();
-        return redirect()->route('home');
+        return redirect()->route('show', ['blog_id' => $blog->id]);
     }
         
     public function delete(Request $request)
     {
         $user_id = $request->user()->id;
         $blog_id = $request->input('blog_id');
-        $blog = DB::table('blogs')
-            ->select('user_id')
-            ->where('id', '=', $blog_id)
-            ->first();
+        $blog = Blog::findOrFail($blog_id);
         if ($user_id === $blog->user_id){
             DB::table('blogs')
                 ->where('id', '=', $blog_id)
                 ->delete();
+
+            $this->delete_image($blog->image);
         }
 
         return redirect()->route('home');
@@ -88,12 +92,9 @@ class BLogController extends Controller
         $user_id = $request->user()->id;
         $blog_id = $request->input('blog_id');
 
-        $blog = DB::table('blogs')
-            ->select('id', 'user_id', 'title', 'content')
-            ->where('id', '=', $blog_id)
-            ->first();
+        $blog = Blog::findOrFail($blog_id);
         
-        if ($blog_id === NULL || $blog === NULL || $user_id !== $blog->user_id){
+        if ($user_id !== $blog->user_id){
                 return redirect()->route('home');
         }
         $response_data = [
@@ -112,6 +113,7 @@ class BLogController extends Controller
             'blog_id' => 'required|exists:blogs,id',
             'blog_title' => 'required|max:255',
             'blog_textarea' => 'required',
+            'blog_img' => 'nullable|sometimes|image|mimes:jpeg,bmp,png,jpg',
         ]);
 
         if ($validator->fails()){
@@ -121,14 +123,20 @@ class BLogController extends Controller
         $user_id = $request->user()->id;
         $blog_id = $request->input('blog_id');
 
-        $update_array = [
-            'title' => $request->input('blog_title'),
-            'content' => $request->input('blog_textarea'),
-        ];
+        $blog = Blog::findorfail($blog_id);
+        if ($blog->user_id != $user_id){
+            return redirect()->route('show', ['blog_id' => $blog_id]);
+        }
 
-        Blog::where('id', $blog_id)
-            ->where('user_id', $user_id)
-            ->update($update_array);
+        $blog->title = $request->input('blog_title');
+        $blog->content = $request->input('blog_textarea');
+
+        if ($request->has('blog_img')){
+            $this->delete_image($blog->image);
+            $blog->image = $this->save_image($request->file('blog_img'));
+        }
+
+        $blog->save();
 
         return redirect()->route('show', ['blog_id' => $blog_id]);
     }
@@ -139,14 +147,12 @@ class BLogController extends Controller
         if ($request->has('blog_id')){
             $blog_id = $request->input('blog_id');
             $blogs = DB::table('blogs')
-                ->select('id', 'user_id', 'name', 'title', 'content', 'created_at')
                 ->where('id', '=', $blog_id)
                 ->get();
         }
         else{
             $blog_id = -1;
             $blogs = DB::table('blogs')
-                ->select('id', 'user_id', 'name', 'title', 'content', 'created_at')
                 ->latest()
                 ->get();
         }
@@ -167,6 +173,7 @@ class BLogController extends Controller
             'blog_user_id' => $blog->user_id,
             'blog_name' => $blog->name,
             'blog_title' => $blog->title,
+            'blog_img' => $blog->image,
             'blog_content' => explode("\n", $blog->content),
             'blog_responses' => $this->get_blog_response($blog_id),
             'date' => $blog->created_at,
@@ -208,5 +215,23 @@ class BLogController extends Controller
             ->latest()
             ->get();
                   
+    }
+
+    private function save_image($image_file){
+        
+        $img = Image::make($image_file);
+        $file_types = explode('/', $img->mime());
+        $mime = end($file_types);
+        $name = sprintf("%s.%s", uniqid(), $mime);
+        
+        $img->save('img/blogs/'.$name);
+
+        return $name;
+    }
+
+    private function delete_image($image_file){
+        // TODO: probably soft delete method
+
+        return;
     }
 }
