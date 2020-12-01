@@ -86,5 +86,36 @@ Validator::make($request->all(), [
 ```
 
 
+### Create logging by slack
+
+1. Get the web hook url from slack.
+2. Add web hook url in `.env`
+```
+LOG_SLACK_WEBHOOK_URL={{YOUR_HOOK_URL}}
+```
+3. Add slack channel to the default channel `stack` in `config/logging.php`
+
+Add channels `slack`
+```php
+'stack' => [
+            'driver' => 'stack',
+            'channels' => ['single', 'slack'],
+            'ignore_exceptions' => false,
+],
+```
+
+4. Refresh cache
+```sh
+php artisan config:cache
+```
+
+5. Test
+```php
+use Illuminate\Support\Facades\Log;
+
+Log::critical('This is a critical message sent from Laravel App');
+```
+
+
 
 
