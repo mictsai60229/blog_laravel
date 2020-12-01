@@ -44,7 +44,7 @@ function append_comment(content, name, time, id){
     let $node = `<li>
         <div class="commentText" id="blog_response_${id}">
             <b class="" style="color: blue">${name}</b>
-            <button onclick="delete_blog_response($id)" class="btn btn-danger btn-sm">delete</button>
+            <button onclick="delete_blog_response(${id})" class="btn btn-danger btn-sm">delete</button>
             <p class="">${content}</p>
             <span class="date sub-text">${time}</span>
         </div>
