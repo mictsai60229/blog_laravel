@@ -22,9 +22,10 @@
 
         <form action="/create_blog" method="post" enctype="multipart/form-data">
           @csrf
+          <input type="hidden" name="blog_id" value="{{$blog_id}}">
           <div class="form-group">
             <label for="blog_title">Title</label>
-            <input type="text" class="form-control" id="blog_title" name="blog_title">
+            <input type="text" class="form-control" id="blog_title" name="blog_title" value="{{$blog_title}}">
           </div>
           <div class="form-group">
             <label for="blog_img">Picture(not required)</label>
@@ -32,7 +33,7 @@
           </div>
           <div class="form-group">
             <label for="blog_textarea">Content</label>
-            <textarea class="form-control" id="blog_textarea" name="blog_textarea" rows="20"></textarea>
+            <textarea class="form-control" id="blog_textarea" name="blog_textarea" rows="20">{{$blog_content}}</textarea>
           </div>
           <div class="form-group">
             <button type="submit" class="btn btn-primary mb-2" style="float: right;">Submit</button>

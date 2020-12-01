@@ -18,10 +18,10 @@ Route::get('/', 'BlogController@index');
 Route::get('/home', 'BlogController@index')->name('home');
 Route::get('/post', 'BlogController@post');
 Route::get('/show', 'BlogController@show')->name('show');
-Route::post('/create_blog', 'BlogController@create');
+Route::post('/create_blog', 'BlogController@create_or_update');
+Route::post('/update_blog', 'BlogController@create_or_update');
 Route::post('/delete_blog', 'BlogController@delete');
-Route::get('/update_blog', 'BlogController@update_index');
-Route::post('/update_blog', 'BlogController@update');
+
 
 
 //BlogResponseController

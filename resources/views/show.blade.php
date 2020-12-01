@@ -21,7 +21,7 @@ Posted by {{$blog_name}} on {{$date}}
             <input type="hidden" name="blog_id" value="{{$blog_id}}">
             <button type="submit" class="btn btn-primary float-right" style="float: right;">Delete</button>
           </form>
-          <form action="/update_blog", method="get">
+          <form action="/post", method="get">
             <input type="hidden" name="blog_id" value="{{$blog_id}}">
             <button type="submit" class="btn btn-primary float-right" style="float: right;">Edit</button>
           </form>

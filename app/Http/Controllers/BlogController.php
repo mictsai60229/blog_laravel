@@ -40,8 +40,22 @@ class BLogController extends Controller
         return view('home', $response_data);
     }
 
-    public function create(Request $request)
+    public function create_or_update(Request $request)
     {
+        $blog_id = $request->input('blog_id');
+        if (empty($blog_id) || $blog_id === -1){
+            return $this->create($request);
+        }
+        else{
+            return $this->update($request);
+        }
+
+    }
+
+    public function create(Request $request)
+        {
+        
+
         $validator = Validator::make($request->all(), [
             'blog_title' => 'required|max:255',
             'blog_textarea' => 'required',
@@ -87,11 +101,18 @@ class BLogController extends Controller
         return redirect()->route('home');
     }
 
-    public function update_index(Request $request)
+    public function post(Request $request)
     {
+
         $user_id = $request->user()->id;
         $blog_id = $request->input('blog_id');
 
+        //for create
+        if (empty($blog_id)){
+            return view('post', ['blog_id' => -1]);
+        }
+
+        //for edit
         $blog = Blog::findOrFail($blog_id);
         
         if ($user_id !== $blog->user_id){
@@ -103,7 +124,7 @@ class BLogController extends Controller
             'blog_content' => $blog->content,
         ];
 
-        return view('edit', $response_data);
+        return view('post', $response_data);
     }
 
     public function update(Request $request)
@@ -180,11 +201,6 @@ class BLogController extends Controller
         ];
         
         return view('show', $response_data);
-    }
-
-    public function post()
-    {
-        return view('post');
     }
 
     private function search($query)
